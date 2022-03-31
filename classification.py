@@ -109,12 +109,12 @@ val_frac = 0.1
 test_frac = 0.1
 length = len(image_files_list)
 indices = np.arange(length)
-# np.random.shuffle(indices)
+np.random.shuffle(indices)
 
-# test_split = int(test_frac * length)
-# val_split = int(val_frac * length) + test_split
-test_indices = [i for i,item in enumerate(image_files_list) if re.search("GH010022",item)]#indices[:176]
-val_indices = [i for i,item in enumerate(image_files_list) if re.search("GH010007",item)]#indices[test_split:val_split]
+test_split = int(test_frac * length)
+val_split = int(val_frac * length) + test_split
+test_indices = [i for i,item in enumerate(image_files_list) if re.search("GH010022",item)]#indices[:176]#
+val_indices = [i for i,item in enumerate(image_files_list) if re.search("GH010007",item)]#indices[test_split:val_split]#
 train_indices = [i for i in indices if i not in val_indices and i not in test_indices]
 
 
@@ -172,9 +172,10 @@ class MedNISTDataset(torch.utils.data.Dataset):
         
         if args.comb_ch==1:     
             image=image[0,:,:]*0.114+image[1,:,:]*0.587+image[2,:,:]*0.299
-            image=cv2.resize(np.array(image),(720,960),interpolation=cv2.INTER_AREA)
+            image=cv2.resize(np.array(image),(360,480),interpolation=cv2.INTER_AREA)
                 
             image=image[None,:,:]
+            print(image.shape)
             
         return image, self.labels[index]
 
